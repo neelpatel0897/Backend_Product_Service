@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InvalidProductIdException extends Exception {
+    
     private Long productId;
 
     public InvalidProductIdException(Long productId, String message) {

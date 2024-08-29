@@ -46,7 +46,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GenericProductDto> updateProductById(@PathVariable("id") Long id, @RequestBody RequestProductDto requestProductDto) {
+    public ResponseEntity<GenericProductDto> updateProductById(@PathVariable("id") Long id, @RequestBody RequestProductDto requestProductDto) throws InvalidProductIdException {
         GenericProductDto product = productService.updateProductById(id, requestProductDto);
         return new ResponseEntity<>(product , HttpStatus.OK);
     }
@@ -54,7 +54,7 @@ public class ProductController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<GenericProductDto> deleteProductById(@PathVariable("id") Long id) {
+    public ResponseEntity<GenericProductDto> deleteProductById(@PathVariable("id") Long id) throws InvalidProductIdException {
         GenericProductDto product = productService.deleteProductById(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }

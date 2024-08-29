@@ -41,7 +41,7 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public GenericProductDto updateProductById(Long id, RequestProductDto product) {
+    public GenericProductDto updateProductById(Long id, RequestProductDto product) throws InvalidProductIdException {
         String productUrl = specificProductRequestUrl+id;      
        
 
@@ -50,12 +50,16 @@ public class FakeStoreProductService implements ProductService {
 				
 		 FakeStoreProductDto fakeStoreProductDto = restTemplate.execute(productUrl, HttpMethod.PUT, requestCallback, responseExtractor, id);
 
+        if( fakeStoreProductDto == null) {
+            throw new InvalidProductIdException(id, "Invalid productId passed");
+        }
+
          return convertFakeStoreProductDto(fakeStoreProductDto);
         
     }
 
     @Override
-    public GenericProductDto deleteProductById(Long id) {
+    public GenericProductDto deleteProductById(Long id) throws InvalidProductIdException {
 
 
         String productUrl = specificProductRequestUrl+id;      
@@ -65,6 +69,10 @@ public class FakeStoreProductService implements ProductService {
 		HttpMessageConverterExtractor<FakeStoreProductDto> responseExtractor =
 				new HttpMessageConverterExtractor<>(FakeStoreProductDto.class, restTemplate.getMessageConverters());
          FakeStoreProductDto fakeStoreProductDto= restTemplate.execute(productUrl, HttpMethod.DELETE, requestCallback, responseExtractor, id);
+
+        if( fakeStoreProductDto == null) {
+            throw new InvalidProductIdException(id, "Invalid productId passed");
+        }
 
          return convertFakeStoreProductDto(fakeStoreProductDto);
 
